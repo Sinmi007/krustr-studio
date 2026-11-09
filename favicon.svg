@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Krustr Studio">
+  <rect x="2" y="2" width="96" height="96" rx="22" fill="#25243A"/>
+  <rect x="24" y="22" width="16" height="56" rx="8" fill="#F8F6FF"/>
+  <g fill="none" stroke-linecap="round" stroke-width="11">
+    <path d="M46.32 34.24 A20 20 0 0 1 46.32 65.76" stroke="#7957FF"/>
+    <path d="M56.18 21.63 A36 36 0 0 1 56.18 78.37" stroke="#B28AFF"/>
+  </g>
+</svg>
