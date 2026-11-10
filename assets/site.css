@@ -130,6 +130,9 @@ html:not(.js) .w > span { transform: none; }
   animation: spin 6s linear infinite; }
 .tag svg { width: 14px; height: 14px; opacity: .7; transition: transform .4s var(--out); }
 .tag:hover svg { transform: translateX(3px); }
+.tag-new { font: 700 10.5px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; padding: 4px 7px; border-radius: 99px; background: var(--violet); color: #fff; }
+.tag-mic { width: 8px; height: 8px; border-radius: 9px; background: var(--live); box-shadow: 0 0 0 4px rgba(255, 77, 77, .18); animation: pulse 1.6s ease-in-out infinite; }
+.fine { margin: -10px 0 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mute); }
 .tag-dot { width: 7px; height: 7px; border-radius: 99px; background: var(--prev); box-shadow: 0 0 0 4px rgba(47, 210, 122, .15); }
 .tag-sep { width: 3px; height: 3px; border-radius: 9px; background: var(--dim); }
 @property --spin { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
@@ -158,7 +161,7 @@ html:not(.js) .w > span { transform: none; }
 .f-lt { left: -4%; bottom: 4%; width: 52%; } .f-lt .bob { --dur: 6.5s; } .f-lt .bob > * { transition-delay: .9s; }
 .f-song { right: 0%; top: -2%; width: 32%; } .f-song .bob { --dur: 8s; } .f-song .bob > * { transition-delay: 1.05s; }
 .f-heard { right: 2%; bottom: 4%; } .f-heard .bob { --dur: 7.4s; } .f-heard .bob > * { transition-delay: 1.2s; }
-.f-obs { left: 10%; top: 0%; } .f-obs .bob { --dur: 9s; } .f-obs .bob > * { transition-delay: 1.35s; }
+.f-listen { left: 6%; top: -3%; width: 46%; } .f-listen .bob { --dur: 9s; } .f-listen .bob > * { transition-delay: 1.35s; }
 .card-lt { position: relative; padding: 15px 18px 16px 20px; border-radius: 14px; overflow: hidden; color: #fff; line-height: 1.38; font-size: clamp(12px, 1vw, 14.5px);
   background: linear-gradient(100deg, rgba(14, 22, 52, .96), rgba(24, 36, 76, .9)); box-shadow: inset 4px 0 0 #f2b33d, 0 0 0 1px rgba(255, 255, 255, .1), 0 30px 60px -20px rgba(0, 0, 0, .8), 0 0 50px -20px rgba(242, 179, 61, .35); }
 .card-lt b { display: block; margin-bottom: 5px; font: 700 .72em var(--display); letter-spacing: .16em; color: #f2b33d; }
@@ -170,7 +173,7 @@ html:not(.js) .w > span { transform: none; }
 .card-song .pill-on { position: absolute; top: 8px; left: 8px; font: 600 9px var(--body); letter-spacing: .08em; padding: 4px 7px; border-radius: 99px; background: rgba(255, 255, 255, .08); color: #d6cfe6; }
 .card-song .yo { font: 600 clamp(13px, 1.25vw, 19px)/1.15 var(--display); letter-spacing: -.01em; }
 .card-song .en { font: italic 500 clamp(10px, .85vw, 13px) var(--body); color: var(--candle); }
-.card-heard, .card-obs { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(16, 16, 27, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 0 0 1px var(--line-2) inset, 0 24px 50px -20px rgba(0, 0, 0, .85); font-size: 12.5px; color: #d6d2e8; white-space: nowrap; }
+.card-heard { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(16, 16, 27, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 0 0 1px var(--line-2) inset, 0 24px 50px -20px rgba(0, 0, 0, .85); font-size: 12.5px; color: #d6d2e8; white-space: nowrap; }
 .card-heard { gap: 11px; padding: 9px 10px 9px 9px; }
 .card-heard .mic { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; background: rgba(255, 77, 77, .15); color: #ff8a8a; box-shadow: 0 0 0 1px rgba(255, 77, 77, .25) inset; }
 .card-heard .mic svg { width: 15px; height: 15px; animation: pulse 1.6s ease-in-out infinite; }
@@ -178,10 +181,16 @@ html:not(.js) .w > span { transform: none; }
 .card-heard small { font-size: 11px; color: var(--mute); }
 .card-heard b { font: 600 14px var(--display); color: #fff; }
 .card-heard .put { margin-left: 6px; font-size: 11.5px; font-weight: 600; padding: 6px 10px; border-radius: 9px; background: var(--violet); color: #fff; }
-.card-obs i { width: 9px; height: 9px; border-radius: 9px; background: var(--prev); box-shadow: 0 0 0 4px rgba(47, 210, 122, .16), 0 0 14px var(--prev); }
-.card-obs div { display: grid; gap: 1px; }
-.card-obs b { font-weight: 600; color: #fff; font-size: 13px; }
-.card-obs span { font-size: 11.5px; color: var(--mute); }
+.card-listen { padding: 11px 14px 13px; border-radius: 16px; background: rgba(16, 16, 27, .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 0 0 1px var(--line-2) inset, 0 24px 50px -20px rgba(0, 0, 0, .85), 0 0 40px -18px rgba(255, 77, 77, .45); }
+.cl-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.card-listen .rec { display: flex; align-items: center; gap: 7px; font: 600 12px var(--body); color: #ffc2c2; }
+.card-listen .rec i { width: 8px; height: 8px; border-radius: 9px; background: var(--live); animation: pulse 1.6s ease-in-out infinite; }
+.wave { flex: 1; display: flex; align-items: center; gap: 3px; height: 20px; }
+.wave i { flex: 1; height: 30%; border-radius: 3px; background: linear-gradient(180deg, var(--lilac), var(--violet)); transition: height .14s ease; }
+.cl-text { margin: 0; min-height: 2.9em; font: italic 500 clamp(12px, .95vw, 14px)/1.45 var(--body); color: #cfcbe2; }
+.cl-text mark { font-style: normal; background: rgba(121, 87, 255, .3); color: #fff; border-radius: 4px; padding: 0 3px; }
+.card-heard.pop { animation: pop .6s var(--out); }
+@keyframes pop { 0% { transform: scale(.94); box-shadow: 0 0 0 1px var(--line-2) inset, 0 0 0 0 rgba(121, 87, 255, .7); } 60% { transform: scale(1.03); box-shadow: 0 0 0 1px rgba(178, 138, 255, .8) inset, 0 0 0 10px rgba(121, 87, 255, 0); } 100% { transform: none; } }
 @media (max-width: 980px) {
   .hero { min-height: 0; }
   .hero-in { grid-template-columns: 1fr; }
@@ -193,7 +202,8 @@ html:not(.js) .w > span { transform: none; }
   .app-layer { left: 4%; width: 100%; }
 }
 @media (max-width: 560px) {
-  .f-obs, .f-heard { display: none; }
+  .f-heard, .f-song { display: none; }
+  .f-listen { width: 74%; left: 0; top: -8%; }
   .f-song { width: 44%; top: -6%; }
   .f-lt { width: 74%; left: 0; bottom: 0; }
 }

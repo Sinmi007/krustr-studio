@@ -340,6 +340,39 @@ void main(){
   const comp = $('#comp')
   whenSeen(comp, () => { if (reduce) return; const id = setInterval(() => comp.classList.toggle('alt'), 3400); return () => clearInterval(id) })
 
+  /* ---- the hero's listening card: the preacher's words arrive, and each verse he names lands in "Heard" ---- */
+  const wave = [...document.querySelectorAll('#wave i')], heroSaying = $('#heroSaying'), heardRef = $('#heardRef'), heardCard = $('#heardCard')
+  const SAID = [
+    ['turn with me to', 'Romans chapter 3 verse 23', 'Romans 3:23'],
+    ['and the Bible says in', 'John chapter 3 verse 16', 'John 3:16'],
+    ['David writes in', 'Psalm 23 verse 1', 'Psalm 23:1'],
+    ['I can do all things, says', 'Philippians 4 verse 13', 'Philippians 4:13']
+  ]
+  if (!reduce) {
+    setInterval(() => wave.forEach((b) => (b.style.height = `${(18 + Math.random() * 82).toFixed(0)}%`)), 150)
+    let k = 0
+    const say = () => {
+      const [lead, ref, label] = SAID[k++ % SAID.length]
+      const words = (lead + ' ' + ref).split(' ')
+      const leadCount = lead.split(' ').length
+      words.forEach((_, i) =>
+        setTimeout(() => {
+          const shown = words.slice(0, i + 1)
+          const done = i + 1 >= words.length
+          heroSaying.innerHTML = done ? `${lead} <mark>${ref}</mark>` : shown.slice(0, leadCount).join(' ') + (i + 1 > leadCount ? ' ' + shown.slice(leadCount).join(' ') : '')
+          if (done) {
+            heardRef.textContent = label
+            heardCard.classList.remove('pop')
+            void heardCard.offsetWidth
+            heardCard.classList.add('pop')
+          }
+        }, i * 230)
+      )
+      setTimeout(say, words.length * 230 + 2600)
+    }
+    setTimeout(say, 2400)
+  }
+
   /* ---- the Sermon card: words arrive as they're preached, the verse is spotted, a card slides in ---- */
   const listen = $('#listen'), saying = $('#saying'), verseCard = $('#verseCard'), meter = $('#meter'), listenClock = $('#listenClock')
   const WORDS = 'and the Bible says in Romans chapter 3 verse 23 that all of us have fallen short'.split(' ')

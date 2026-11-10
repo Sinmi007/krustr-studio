@@ -63,19 +63,21 @@
 
     <div class="hero-in">
       <div class="hero-copy" id="heroCopy">
-        <a class="tag" href="#get" data-in style="--d:0">
-          <span class="tag-dot"></span>Free for churches <span class="tag-sep"></span> Windows 10 and 11
+        <a class="tag" href="#sermon" data-in style="--d:0">
+          <span class="tag-new">New</span><span class="tag-mic" aria-hidden="true"></span>Hears the sermon, finds the verse
           <svg><use href="#arrow"/></svg>
         </a>
         <h1 class="headline" data-words>Every verse on screen, <em>right on cue.</em></h1>
-        <p class="lede" data-in style="--d:.5">Scripture, song lyrics and lower thirds for your livestream and projector. One volunteer, one window, calm on Sunday.</p>
+        <p class="lede" data-in style="--d:.5">Scripture, song lyrics and lower thirds for your livestream and projector. It even listens to the sermon and offers each verse as it's preached.</p>
         <div class="ctas" data-in style="--d:.62">
           <a class="btn btn-light btn-lg magnetic js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
           <a class="btn btn-ghost btn-lg" href="#features">See it in action <svg><use href="#arrow"/></svg></a>
         </div>
+        <p class="fine" data-in style="--d:.7"><span class="tag-dot"></span>Free for churches · Windows 10 and 11</p>
         <ul class="proof" data-in style="--d:.75">
           <li><b>Works offline</b>KJV, BSB, Yorùbá, Igbo and Hausa built in</li>
           <li><b>Plugs in</b>OBS, vMix and any projector</li>
+          <li><b>Listens live</b>Verses offered as they're preached</li>
         </ul>
       </div>
 
@@ -140,10 +142,14 @@
           <div class="card-song"><span class="pill-on">Song · Slide 2 of 6</span><div class="yo">Ọlọ́run Olódùmarè</div><div class="en">God Almighty</div></div>
         </div></div>
         <div class="depth float f-heard" data-depth="3"><div class="bob">
-          <div class="card-heard"><span class="mic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><div><small>Heard in the sermon</small><b>Romans 3:23</b></div><span class="put">Preview</span></div>
+          <div class="card-heard" id="heardCard"><span class="mic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><div><small>Heard in the sermon</small><b id="heardRef">Romans 3:23</b></div><span class="put">Preview</span></div>
         </div></div>
-        <div class="depth float f-obs" data-depth="2.1"><div class="bob">
-          <div class="card-obs"><i></i><div><b>OBS connected</b><span>Browser source · 1920×1080</span></div></div>
+        <div class="depth float f-listen" data-depth="2.1"><div class="bob">
+          <div class="card-listen">
+            <div class="cl-top"><span class="rec"><i></i>Listening</span><span class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+            <p class="cl-text" id="heroSaying">turn with me to <mark>Romans chapter 3 verse 23</mark></p>
+          </div>
+        </div></div>
         </div></div>
       </div>
     </div>
