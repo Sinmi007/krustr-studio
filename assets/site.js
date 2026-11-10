@@ -340,6 +340,28 @@ void main(){
   const comp = $('#comp')
   whenSeen(comp, () => { if (reduce) return; const id = setInterval(() => comp.classList.toggle('alt'), 3400); return () => clearInterval(id) })
 
+  /* ---- the Sermon card: words arrive as they're preached, the verse is spotted, a card slides in ---- */
+  const listen = $('#listen'), saying = $('#saying'), verseCard = $('#verseCard'), meter = $('#meter'), listenClock = $('#listenClock')
+  const WORDS = 'and the Bible says in Romans chapter 3 verse 23 that all of us have fallen short'.split(' ')
+  const REF = [5, 9] // "Romans chapter 3 verse 23"
+  const render = (n) => {
+    const w = WORDS.slice(0, n)
+    saying.innerHTML = w.map((x, i) => (i === REF[0] && n > REF[1] + 1 ? '<mark>' : '') + x + (i === REF[1] && n > REF[1] + 1 ? '</mark>' : '')).join(' ')
+  }
+  whenSeen(listen, () => {
+    if (reduce) { render(WORDS.length); verseCard.classList.add('in'); return }
+    let secs = 12 * 60 + 4
+    const tickClock = setInterval(() => { secs++; listenClock.textContent = `${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}` }, 1000)
+    const tickMeter = setInterval(() => { meter.style.transform = `scaleX(${(0.25 + Math.random() * 0.65).toFixed(2)})` }, 140)
+    const stop = loop([
+      [0, () => { render(0); verseCard.classList.remove('in') }],
+      ...WORDS.map((_, i) => [400 + i * 260, () => render(i + 1)]),
+      [400 + (REF[1] + 2) * 260 + 150, () => verseCard.classList.add('in')],
+      [8200, () => verseCard.classList.remove('in')]
+    ], 9000)
+    return () => { stop(); clearInterval(tickClock); clearInterval(tickMeter) }
+  })
+
   /* ---- downloads: point every button at the newest installer on GitHub Releases ---- */
   const REPO = 'Sinmi007/krustr-studio'
   const setDownload = (rel) => {
