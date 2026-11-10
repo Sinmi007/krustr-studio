@@ -291,7 +291,59 @@ void main(){
       search.textContent = `jn 3:${v.dataset.v}`
     }, 1400)
   }
-  if (!reduce) setInterval(tick, 3600)
+  let inSermon = false
+  if (!reduce) setInterval(() => { if (!inSermon) tick() }, 3600)
+
+  /* ---- the app switches to Sermon now and then: it hears the preacher, a verse card pops in, the verse goes to Preview ---- */
+  const appEl = $('#app'), railBible = $('.rail [data-mode=bible]'), railSermon = $('.rail [data-mode=sermon]')
+  const smNow = $('#smNow'), smCard = $('#smCard'), smRef = $('#smRef'), smText = $('#smText'), smAt = $('#smAt'), smMeter = $('#smMeter'), smClock = $('#smClock')
+  const heardRef = $('#heardRef'), heardCard = $('#heardCard')
+  // The preacher's lines are our own wording; the verses are the King James Version (public domain).
+  const HEARD = [
+    ['turn with me to', 'Romans chapter 3 verse 23', 'Romans 3:23', 'ROMANS 3:23', 'For all have sinned, and come short of the glory of God;'],
+    ['David writes in', 'Psalm 23 verse 1', 'Psalm 23:1', 'PSALM 23:1', 'The LORD is my shepherd; I shall not want.'],
+    ['Paul says in', 'Philippians 4 verse 13', 'Philippians 4:13', 'PHILIPPIANS 4:13', 'I can do all things through Christ which strengtheneth me.']
+  ]
+  const pop = (el) => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop') }
+  let heard = 0, smSecs = 18 * 60 + 42
+  const stamp = () => `${String(Math.floor(smSecs / 60)).padStart(2, '0')}:${String(smSecs % 60).padStart(2, '0')}`
+  setInterval(() => { smSecs++; smClock.textContent = stamp() }, 1000)
+  const sermonScene = () => {
+    const [lead, said, label, cap, text] = HEARD[heard++ % HEARD.length]
+    inSermon = true
+    appEl.classList.add('sermon')
+    railBible.classList.remove('on'); railSermon.classList.add('on')
+    const meter = setInterval(() => { smMeter.style.transform = `scaleX(${(0.25 + Math.random() * 0.65).toFixed(2)})` }, 140)
+    const words = `${lead} ${said}`.split(' ')
+    smNow.innerHTML = '<span></span>'
+    words.forEach((_, i) => setTimeout(() => {
+      const done = i + 1 === words.length
+      smNow.innerHTML = `<span>${done ? `${lead} <mark>${said}</mark>` : words.slice(0, i + 1).join(' ')}</span>`
+      if (!done) return
+      // spotted: a card in Sermon, the same in "Heard in the sermon", then into Preview
+      smRef.textContent = label; smText.textContent = text; smAt.textContent = stamp(); pop(smCard)
+      heardRef.textContent = label; pop(heardCard)
+      setTimeout(() => swap(pvLt, `<b>${cap} · KJV</b><span>${text}</span>`), 900)
+      setTimeout(() => {
+        take.classList.add('press')
+        setTimeout(() => {
+          take.classList.remove('press')
+          swap(pgLt, `<b>${cap} · KJV</b><span>${text}</span>`)
+          // the big lower third follows what just went live
+          fLt.classList.add('swap')
+          setTimeout(() => { fLtRef.textContent = `${cap} · KJV`; fLtText.textContent = text; fLt.classList.remove('swap') }, 380)
+        }, 160)
+      }, 2600)
+    }, 500 + i * 240))
+    setTimeout(() => {
+      clearInterval(meter)
+      appEl.classList.remove('sermon')
+      railSermon.classList.remove('on'); railBible.classList.add('on')
+      inSermon = false
+    }, 500 + words.length * 240 + 5200)
+  }
+  if (!reduce) setTimeout(function cycle() { sermonScene(); setTimeout(cycle, 22000) }, 9000)
+
   const pad = (n) => String(n).padStart(2, '0')
   let onAir = 42 * 60 + 10
   setInterval(() => {
@@ -339,39 +391,6 @@ void main(){
   })
   const comp = $('#comp')
   whenSeen(comp, () => { if (reduce) return; const id = setInterval(() => comp.classList.toggle('alt'), 3400); return () => clearInterval(id) })
-
-  /* ---- the hero's listening card: the preacher's words arrive, and each verse he names lands in "Heard" ---- */
-  const wave = [...document.querySelectorAll('#wave i')], heroSaying = $('#heroSaying'), heardRef = $('#heardRef'), heardCard = $('#heardCard')
-  const SAID = [
-    ['turn with me to', 'Romans chapter 3 verse 23', 'Romans 3:23'],
-    ['and the Bible says in', 'John chapter 3 verse 16', 'John 3:16'],
-    ['David writes in', 'Psalm 23 verse 1', 'Psalm 23:1'],
-    ['I can do all things, says', 'Philippians 4 verse 13', 'Philippians 4:13']
-  ]
-  if (!reduce) {
-    setInterval(() => wave.forEach((b) => (b.style.height = `${(18 + Math.random() * 82).toFixed(0)}%`)), 150)
-    let k = 0
-    const say = () => {
-      const [lead, ref, label] = SAID[k++ % SAID.length]
-      const words = (lead + ' ' + ref).split(' ')
-      const leadCount = lead.split(' ').length
-      words.forEach((_, i) =>
-        setTimeout(() => {
-          const shown = words.slice(0, i + 1)
-          const done = i + 1 >= words.length
-          heroSaying.innerHTML = done ? `${lead} <mark>${ref}</mark>` : shown.slice(0, leadCount).join(' ') + (i + 1 > leadCount ? ' ' + shown.slice(leadCount).join(' ') : '')
-          if (done) {
-            heardRef.textContent = label
-            heardCard.classList.remove('pop')
-            void heardCard.offsetWidth
-            heardCard.classList.add('pop')
-          }
-        }, i * 230)
-      )
-      setTimeout(say, words.length * 230 + 2600)
-    }
-    setTimeout(say, 2400)
-  }
 
   /* ---- the Sermon card: words arrive as they're preached, the verse is spotted, a card slides in ---- */
   const listen = $('#listen'), saying = $('#saying'), verseCard = $('#verseCard'), meter = $('#meter'), listenClock = $('#listenClock')

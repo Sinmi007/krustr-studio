@@ -93,9 +93,9 @@
             </div>
             <div class="app-cols">
               <div class="rail">
-                <div><i></i>Schedule</div><div class="on"><i></i>Bible</div><div><i></i>Songs</div><div><i></i>Media</div><div><i></i>Layouts</div><div class="live-dot"><i></i>Sermon</div>
+                <div><i></i>Schedule</div><div class="on" data-mode="bible"><i></i>Bible</div><div><i></i>Songs</div><div><i></i>Media</div><div><i></i>Layouts</div><div class="live-dot" data-mode="sermon"><i></i>Sermon</div>
               </div>
-              <div class="pane">
+              <div class="pane pane-scripture">
                 <h4>Scripture</h4>
                 <div class="search"><span id="appSearch">jn 3:16</span><span class="caret"></span></div>
                 <div class="chap">John 3</div>
@@ -104,6 +104,18 @@
                   <p data-v="16" class="sel"><b>16</b>For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.</p>
                   <p data-v="17"><b>17</b>For God sent not his Son into the world to condemn the world; but that the world through him might be saved.</p>
                   <p data-v="18"><b>18</b>He that believeth on him is not condemned: but he that believeth not is condemned already.</p>
+                </div>
+              </div>
+              <div class="pane pane-sermon">
+                <h4>Sermon</h4>
+                <div class="sm-top"><span class="sm-stop"><i></i>Stop</span><span class="sm-state"><span><i></i>Listening · English (Nigeria)</span><small id="smClock">18:42</small></span></div>
+                <div class="sm-meter"><span id="smMeter"></span></div>
+                <div class="sm-label">Verses mentioned</div>
+                <div class="sm-card" id="smCard"><b><span id="smRef">Romans 3:23</span><em id="smAt">18:42</em></b><span id="smText">For all have sinned, and come short of the glory of God;</span></div>
+                <div class="sm-lines">
+                  <p><b>18:20</b>So we know we are saved by grace and not by our own works.</p>
+                  <p><b>18:31</b>Nobody here can stand before God on their own record.</p>
+                  <p class="now" id="smNow"><span>turn with me to <mark>Romans chapter 3 verse 23</mark></span></p>
                 </div>
               </div>
               <div class="stagecol">
@@ -144,11 +156,8 @@
         <div class="depth float f-heard" data-depth="3"><div class="bob">
           <div class="card-heard" id="heardCard"><span class="mic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><div><small>Heard in the sermon</small><b id="heardRef">Romans 3:23</b></div><span class="put">Preview</span></div>
         </div></div>
-        <div class="depth float f-listen" data-depth="2.1"><div class="bob">
-          <div class="card-listen">
-            <div class="cl-top"><span class="rec"><i></i>Listening</span><span class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-            <p class="cl-text" id="heroSaying">turn with me to <mark>Romans chapter 3 verse 23</mark></p>
-          </div>
+        <div class="depth float f-obs" data-depth="2.1"><div class="bob">
+          <div class="card-obs"><i></i><div><b>OBS connected</b><span>Browser source · 1920×1080</span></div></div>
         </div></div>
         </div></div>
       </div>
