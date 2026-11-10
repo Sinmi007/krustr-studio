@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Krustr Studio: church graphics for livestreams and projectors</title>
   <meta name="description" content="Scripture, song lyrics and lower thirds for your livestream and projector, run by one volunteer from one window. Free for churches on Windows.">
-  <meta name="theme-color" content="#0b0a12">
+  <meta name="theme-color" content="#07070c">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Krustr Studio">
@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="/assets/site.css">
+  <script src="/assets/vendor/lenis.min.js" defer></script>
   <script src="/assets/site.js" defer></script>
 </head>
 <body>
@@ -29,77 +30,93 @@
     </g>
   </symbol>
   <symbol id="win" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.3 10.4 4.3v7.1H3zM11.3 4.2 21 2.8v8.6h-9.7zM3 12.4h7.4v7.2L3 18.6zM11.3 12.4H21V21l-9.7-1.4z"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
 </svg>
 
-<nav class="nav gutter" id="nav" aria-label="Main">
+<nav class="nav" id="nav" aria-label="Main">
   <div class="bar">
     <a class="brand" href="#top" aria-label="Krustr Studio home"><svg><use href="#mark"/></svg>krustr <span>studio</span></a>
     <ul class="links">
       <li><a href="#features">Features</a></li>
       <li><a href="#bible">Bible</a></li>
       <li><a href="#songs">Songs</a></li>
-      <li><a href="#how">How it works</a></li>
+      <li><a href="#how">Get started</a></li>
     </ul>
-    <a class="pill light js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download</a>
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i><i></i><i></i></button>
-    <div class="sheet" id="sheet">
-      <a class="row" style="--i:0" href="#features">Features</a>
-      <a class="row" style="--i:1" href="#bible">Bible</a>
-      <a class="row" style="--i:2" href="#songs">Songs</a>
-      <a class="row" style="--i:3" href="#how">How it works</a>
-      <a class="pill light big js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
-    </div>
+    <a class="btn btn-light btn-sm js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i></i><i></i></button>
+  </div>
+  <div class="sheet" id="sheet">
+    <a class="row" style="--i:0" href="#features">Features</a>
+    <a class="row" style="--i:1" href="#bible">Bible</a>
+    <a class="row" style="--i:2" href="#songs">Songs</a>
+    <a class="row" style="--i:3" href="#how">Get started</a>
+    <a class="btn btn-light js-dl row" style="--i:4" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
   </div>
 </nav>
 
 <main id="top">
-  <div class="stage" id="stage">
-    <section class="hero" aria-label="Krustr Studio">
-      <canvas id="backdrop" aria-hidden="true"></canvas>
-      <div class="frame" id="frame">
-        <canvas id="sky" aria-hidden="true"></canvas>
-        <div class="hero-copy gutter" id="heroCopy">
-          <a class="badge" href="#get"><b>↗</b>Free for churches · Windows 10 and 11</a>
-          <h1 class="reveal" data-reveal>Every verse on screen, right on cue.</h1>
-          <p class="lede reveal" data-reveal data-by="words" data-delay="0.7">Scripture, song lyrics and lower thirds for your livestream and projector, run by one volunteer from one window.</p>
-          <div class="ctas">
-            <a class="pill light big js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
-            <a class="pill glass big" href="#features">See how it works</a>
-          </div>
+  <header class="hero">
+    <canvas class="light" id="light" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+
+    <div class="hero-in">
+      <div class="hero-copy" id="heroCopy">
+        <a class="tag" href="#get" data-in style="--d:0">
+          <span class="tag-dot"></span>Free for churches <span class="tag-sep"></span> Windows 10 and 11
+          <svg><use href="#arrow"/></svg>
+        </a>
+        <h1 class="headline" data-words>Every verse on screen, <em>right on cue.</em></h1>
+        <p class="lede" data-in style="--d:.5">Scripture, song lyrics and lower thirds for your livestream and projector. One volunteer, one window, calm on Sunday.</p>
+        <div class="ctas" data-in style="--d:.62">
+          <a class="btn btn-light btn-lg magnetic js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
+          <a class="btn btn-ghost btn-lg" href="#features">See it in action <svg><use href="#arrow"/></svg></a>
         </div>
-        <div class="works gutter" id="works">
-          <p>Sends graphics to the tools your church already uses</p>
-          <ul><li>OBS Studio</li><li>vMix</li><li>Any projector</li><li>EasyWorship songs</li><li>YouTube Live via OBS</li></ul>
-        </div>
+        <ul class="proof" data-in style="--d:.75">
+          <li><b>Works offline</b>KJV, BSB, Yorùbá, Igbo and Hausa built in</li>
+          <li><b>Plugs in</b>OBS, vMix and any projector</li>
+        </ul>
       </div>
 
-      <div class="mock-holder" aria-hidden="true">
-        <div class="mock-scale" id="mock">
-          <div class="app">
-            <div class="top">
+      <div class="scene" id="scene" aria-hidden="true">
+        <div class="scene-glow"></div>
+        <div class="depth app-layer" data-depth="1">
+          <div class="app" id="app">
+            <div class="app-top">
               <span class="k"><svg><use href="#mark"/></svg>krustr <span>studio</span></span>
-              <span class="chip on">ON AIR</span>
-              <span style="font:600 11px ui-monospace,monospace;color:#a5a1bb">10:42:07 AM</span>
-              <span style="margin-left:auto" class="chip">OUTPUT · 2 CONNECTED</span>
+              <span class="chip live"><i></i>ON AIR</span>
+              <span class="clock" id="appClock">10:42:07</span>
+              <span class="chip ml">2 outputs connected</span>
             </div>
-            <div class="cols">
-              <div class="rail"><div><i></i>Schedule</div><div class="on"><i></i>Bible</div><div><i></i>Songs</div><div><i></i>Media</div><div><i></i>Layouts</div></div>
-              <div class="panel-m">
+            <div class="app-cols">
+              <div class="rail">
+                <div><i></i>Schedule</div><div class="on"><i></i>Bible</div><div><i></i>Songs</div><div><i></i>Media</div><div><i></i>Layouts</div>
+              </div>
+              <div class="pane">
                 <h4>Scripture</h4>
-                <div class="search">jn 3:16<span class="caret"></span></div>
-                <div style="padding:2px 14px 8px;font:600 13px var(--display);text-align:center">John 3</div>
-                <div class="verses">
-                  <p><b>14</b>And as Moses lifted up the serpent in the wilderness, even so must the Son of man be lifted up:</p>
-                  <p><b>15</b>That whosoever believeth in him should not perish, but have eternal life.</p>
-                  <p class="sel"><b>16</b>For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.</p>
-                  <p><b>17</b>For God sent not his Son into the world to condemn the world; but that the world through him might be saved.</p>
+                <div class="search"><span id="appSearch">jn 3:16</span><span class="caret"></span></div>
+                <div class="chap">John 3</div>
+                <div class="verses" id="appVerses">
+                  <p data-v="15"><b>15</b>That whosoever believeth in him should not perish, but have eternal life.</p>
+                  <p data-v="16" class="sel"><b>16</b>For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.</p>
+                  <p data-v="17"><b>17</b>For God sent not his Son into the world to condemn the world; but that the world through him might be saved.</p>
+                  <p data-v="18"><b>18</b>He that believeth on him is not condemned: but he that believeth not is condemned already.</p>
                 </div>
               </div>
               <div class="stagecol">
                 <div class="monrow">
-                  <div><div class="mon-label"><span class="p">● PREVIEW</span></div><div class="screen prev" style="margin-top:6px"><div class="cam"></div><div class="lt"><b>JOHN 3:16 · KJV</b>For God so loved the world, that he gave his only begotten Son…</div></div></div>
-                  <div style="display:grid;gap:8px;padding-top:16px"><div class="tbtn">→<span>Transition</span></div><div class="tbtn cut">Cut</div></div>
-                  <div><div class="mon-label"><span class="l">● PROGRAM · ON AIR</span></div><div class="screen live" style="margin-top:6px"><div class="cam"></div></div></div>
+                  <div class="mon"><div class="mon-l pv"><i></i>Preview</div><div class="screen pv"><div class="cam"></div><div class="lt" id="pvLt"><b>JOHN 3:16 · KJV</b><span>For God so loved the world, that he gave his only begotten Son…</span></div></div></div>
+                  <div class="tcol"><div class="tbtn" id="appTake"><svg><use href="#arrow"/></svg>Transition</div><div class="tbtn cut">Cut</div></div>
+                  <div class="mon"><div class="mon-l pg"><i></i>Program</div><div class="screen pg"><div class="cam"></div><div class="lt" id="pgLt"><b>JOHN 3:15 · KJV</b><span>That whosoever believeth in him should not perish…</span></div></div></div>
+                </div>
+                <div class="layers-row">
+                  <div class="pvstrip"><b>LT</b><span id="pvName">John 3:16 · KJV</span></div>
+                  <div></div>
+                  <div class="lstrip"><div class="on"><b>LT</b><span id="pgName">John 3:15</span></div><div><b>FS</b>Off</div><div class="on"><b>IN</b><span>Camera 1</span></div></div>
+                </div>
+                <div class="app-note">
+                  <div>On air for<strong id="appAir">00:42:10</strong></div>
+                  <div>Verses shown today<strong id="appCount">23</strong></div>
+                  <div>Next in schedule<strong>Offering</strong></div>
                 </div>
                 <div class="ctrl"><span>◂ Scripture reading ▸</span><span>Lower third</span><span>Full screen</span><span>Clear all</span><span class="r">Projector</span></div>
               </div>
@@ -107,84 +124,105 @@
                 <div class="seg"><span class="on">Properties</span><span>Animation</span><span>Branding</span></div>
                 <div class="field"><label>Style</label><div>Classic</div></div>
                 <div class="field"><label>Version</label><div>King James Version</div></div>
-                <div class="field"><label>Reference</label><div>John 3:16</div></div>
-                <div class="field"><label>Text size</label><div>100%</div></div>
+                <div class="field"><label>Reference</label><div id="appRef">John 3:16</div></div>
                 <div class="field"><label>Entrance</label><div>Slide from left</div></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
 
-  <section class="statement gutter" aria-label="Why Krustr">
-    <p class="scrub" id="scrub">The pastor says <span class="kw">John 3:16.</span> You type <span class="kw">jn 3 16</span> and press Space. The verse is on the livestream before the congregation has turned the page.</p>
+        <div class="depth float f-lt" data-depth="2.4"><div class="bob">
+          <div class="card-lt"><b id="fLtRef">JOHN 3:16 · KJV</b><span id="fLtText">For God so loved the world, that he gave his only begotten Son…</span></div>
+        </div></div>
+        <div class="depth float f-song" data-depth="1.8"><div class="bob">
+          <div class="card-song"><span class="pill-on">Song · Slide 2 of 6</span><div class="yo">Ọlọ́run Olódùmarè</div><div class="en">God Almighty</div></div>
+        </div></div>
+        <div class="depth float f-keys" data-depth="3"><div class="bob">
+          <div class="card-keys"><span><kbd>Space</kbd>Transition</span><span><kbd>Enter</kbd>Cut</span></div>
+        </div></div>
+        <div class="depth float f-obs" data-depth="2.1"><div class="bob">
+          <div class="card-obs"><i></i><div><b>OBS connected</b><span>Browser source · 1920×1080</span></div></div>
+        </div></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="works" aria-label="Works with">
+    <p>Sends graphics to the tools your church already uses</p>
+    <div class="marquee"><div class="track">
+      <span>OBS Studio</span><span>vMix</span><span>YouTube Live</span><span>Facebook Live</span><span>Any projector</span><span>EasyWorship songs</span><span>Second screens</span>
+      <span aria-hidden="true">OBS Studio</span><span aria-hidden="true">vMix</span><span aria-hidden="true">YouTube Live</span><span aria-hidden="true">Facebook Live</span><span aria-hidden="true">Any projector</span><span aria-hidden="true">EasyWorship songs</span><span aria-hidden="true">Second screens</span>
+    </div></div>
   </section>
 
-  <section class="stack gutter" id="features">
-    <div class="wrap">
-      <div class="stack-head">
-        <h2>Everything Sunday needs on screen</h2>
-        <p>One window for the Bible, the songs and the cameras. Preview what's next, then take it live with one key.</p>
-      </div>
+  <section class="statement wrap" aria-label="Why Krustr">
+    <p class="scrub" id="scrub">The pastor says <span class="hl">John 3:16.</span> You type <span class="hl">jn 3 16</span> and press Space. The verse is on the livestream before anyone has turned the page.</p>
+  </section>
 
-      <div class="card-slot" id="bible"><article class="card">
+  <section class="features wrap" id="features">
+    <div class="sec-head">
+      <span class="eyebrow" data-in>What it does</span>
+      <h2 data-words>Everything Sunday needs on screen.</h2>
+      <p data-in style="--d:.2">One window for the Bible, the songs and the cameras. Preview what's next, then take it live with one key.</p>
+    </div>
+
+    <div class="stack">
+      <div class="slot" id="bible"><article class="card spot">
         <div class="txt">
           <span class="eyebrow">Bible</span>
-          <h3>Find any verse as fast as it's read</h3>
-          <p>Type a reference the way people say it. Krustr finds it, puts it in Preview, and steps through the passage verse by verse.</p>
+          <h3>Find any verse as fast as it's read.</h3>
+          <p>Type a reference the way people say it. Krustr finds it, puts it in Preview and steps through the passage verse by verse.</p>
           <ul class="ticks">
             <li>Short references like jn 3 16, 1 cor 13 4-7 or ps 23</li>
-            <li>Many English versions, plus Yoruba, Igbo and Hausa Bibles online</li>
-            <li><span>Next verse with <kbd>Page Down</kbd>, live as you step</span></li>
+            <li>English versions, plus Yorùbá, Igbo and Hausa Bibles</li>
+            <li>Next verse with <kbd>Page Down</kbd>, live as you step</li>
           </ul>
         </div>
-        <div class="vis"><div class="tv" id="tvBible"><div class="cam"></div><div class="typer"><em>⌕</em><span id="typed"></span><span class="caret" style="width:1px;height:16px;background:var(--lilac);animation:blink 1s steps(1) infinite"></span></div><div class="lt"><b>JOHN 3:16 · KJV</b>For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish.</div></div></div>
+        <div class="vis"><div class="tv" id="tvBible"><div class="cam"></div><div class="typer"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="typed"></span><span class="caret"></span></div><div class="lt"><b>JOHN 3:16 · KJV</b><span>For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish.</span></div></div></div>
       </article></div>
 
-      <div class="card-slot" id="songs"><article class="card warm">
+      <div class="slot" id="songs"><article class="card spot warm">
         <div class="txt">
           <span class="eyebrow">Songs</span>
-          <h3>Lyrics in the language the choir sings, with the English underneath</h3>
-          <p>Keep your song library in one place. Bring it over from EasyWorship, then add translations line by line, with machine drafts to start from.</p>
+          <h3>Sing in Yorùbá. Read along in English.</h3>
+          <p>Keep the whole song library in one place. Bring it over from EasyWorship, then add translations line by line, starting from a machine draft.</p>
           <ul class="ticks">
             <li>Import songs and schedules from EasyWorship</li>
-            <li>Translation drafts from Gemini, marked so you can check them</li>
+            <li>Translation drafts, marked until someone checks them</li>
             <li>Lower third or full screen, slide by slide</li>
           </ul>
         </div>
-        <div class="vis"><div class="slide"><div class="yo">Ọlọ́run Olódùmarè</div><div class="en">God Almighty</div><div class="draft">DRAFT · CHECK BEFORE SUNDAY</div></div><div class="ew"><i></i>214 songs imported from EasyWorship</div></div>
+        <div class="vis"><div class="slide"><div class="yo">Ọlọ́run Olódùmarè</div><div class="en">God Almighty</div><div class="draft">DRAFT · CHECK BEFORE SUNDAY</div></div><div class="toast"><i></i>Songs imported from EasyWorship</div></div>
       </article></div>
 
-      <div class="card-slot"><article class="card">
+      <div class="slot"><article class="card spot">
         <div class="txt">
           <span class="eyebrow">Live</span>
           <h3>Preview first. Take it live when it's right.</h3>
-          <p>Line up the next graphic while the current one is on air. Space plays the animation, Enter cuts. Lower thirds, full screens and cameras sit on their own layers.</p>
+          <p>Line up the next graphic while the current one is on air. Space plays the animation, Enter cuts. Lower thirds, full screens and cameras each sit on their own layer.</p>
           <ul class="ticks">
-            <li>Lower third, full screen and input layers, each with Hide</li>
-            <li>A browser-source URL for OBS and vMix</li>
-            <li>A second-screen projector output</li>
+            <li>Lower third, full screen and camera layers, each with Hide</li>
+            <li>A browser-source address for OBS and vMix</li>
+            <li>A projector output for a second screen</li>
           </ul>
         </div>
-        <div class="vis"><div class="duo" id="duo">
-          <div><div class="lab" style="color:var(--prev)">● PREVIEW</div><div class="screen prev"><div class="cam"></div><div class="lt"><b>PASTOR ADE OKAFOR</b>Sunday message</div></div></div>
-          <div class="take" id="take">SPACE</div>
-          <div><div class="lab" style="color:var(--live)">● ON AIR</div><div class="screen live live-empty" id="liveScreen"><div class="cam"></div><div class="lt"><b>PASTOR ADE OKAFOR</b>Sunday message</div></div></div>
+        <div class="vis"><div class="duo">
+          <div><div class="lab pv">Preview</div><div class="screen pv"><div class="cam"></div><div class="lt"><b>PASTOR ADE OKAFOR</b><span>Sunday message</span></div></div></div>
+          <div class="take" id="take"><kbd>Space</kbd></div>
+          <div><div class="lab pg">On air</div><div class="screen pg off" id="liveScreen"><div class="cam"></div><div class="lt"><b>PASTOR ADE OKAFOR</b><span>Sunday message</span></div></div></div>
           <div class="layers"><span id="lyLT">LT · Lower third</span><span>FS · Full screen</span><span class="on">IN · Camera 1</span></div>
         </div></div>
       </article></div>
 
-      <div class="card-slot"><article class="card warm">
+      <div class="slot"><article class="card spot warm">
         <div class="txt">
           <span class="eyebrow">Layouts</span>
-          <h3>Camera and verse side by side, like a conference broadcast</h3>
+          <h3>Camera and verse side by side, like a conference stage.</h3>
           <p>Build a layout once: a camera box, a content box, your logo and a strip for the event name. Every verse or lyric you pick fills the content box.</p>
           <ul class="ticks">
             <li>Your church's colours, fonts and logo on every graphic</li>
-            <li>Reuse a camera feed across layouts</li>
-            <li>Change the arrangement between services, not during them</li>
+            <li>One camera feed reused across layouts</li>
+            <li>Switch arrangements between services in a click</li>
           </ul>
         </div>
         <div class="vis"><div class="comp" id="comp">
@@ -196,32 +234,36 @@
     </div>
   </section>
 
-  <section class="steps gutter" id="how">
-    <div class="wrap">
-      <h2>Ready before the first hymn</h2>
+  <section class="steps wrap" id="how">
+    <div class="sec-head">
+      <span class="eyebrow" data-in>Get started</span>
+      <h2 data-words>Ready before the first hymn.</h2>
+    </div>
+    <div class="timeline" id="timeline">
+      <div class="line"><span id="lineFill"></span></div>
       <ol>
-        <li style="--i:0"><h3>Install it on the media laptop</h3><p>Download for Windows and run the installer. No account, no setup wizard.</p></li>
-        <li style="--i:1"><h3>Add your church's look</h3><p>Name, logo, colours and fonts go on every graphic, including what's already on air.</p></li>
-        <li style="--i:2"><h3>Connect and go live</h3><p>Paste the output URL into OBS or vMix as a browser source, or open the projector on a second screen.</p></li>
+        <li><span class="num">1</span><h3>Install it on the media laptop</h3><p>Download for Windows and run the installer. No account to create.</p></li>
+        <li><span class="num">2</span><h3>Add your church's look</h3><p>Name, logo, colours and fonts go on every graphic, including what's already on air.</p></li>
+        <li><span class="num">3</span><h3>Connect and go live</h3><p>Paste the output address into OBS or vMix as a browser source, or open the projector on a second screen.</p></li>
       </ol>
     </div>
   </section>
 
-  <section class="download gutter" id="get">
-    <div class="wrap">
-      <div class="dl">
-        <svg width="64" height="64" aria-hidden="true"><use href="#mark"/></svg>
-        <h2>Bring Sunday to every screen</h2>
-        <p>Krustr Studio is free while it's in beta. Download it for the media laptop and run your next service with it.</p>
-        <a class="pill light big js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
-        <div class="meta"><span id="dlVersion">Latest version</span><span>Windows 10 and 11, 64-bit</span><span id="dlSize">Free during the beta</span></div>
-        <p class="note">Windows may say the publisher is unknown while the installer is unsigned. Choose <b>More info</b>, then <b>Run anyway</b>. <a href="https://github.com/Sinmi007/krustr-studio/releases">All releases</a></p>
-      </div>
+  <section class="download" id="get">
+    <div class="cta">
+      <div class="beam" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+      <svg class="cta-mark" aria-hidden="true"><use href="#mark"/></svg>
+      <h2 data-words>Bring Sunday to every screen.</h2>
+      <p>Krustr Studio is free while it's in beta. Install it on the media laptop and run your next service with it.</p>
+      <a class="btn btn-light btn-lg magnetic js-dl" href="https://github.com/Sinmi007/krustr-studio/releases/latest"><svg><use href="#win"/></svg>Download for Windows</a>
+      <div class="meta"><span id="dlVersion">Latest version</span><span>Windows 10 and 11, 64-bit</span><span id="dlSize">Free during the beta</span></div>
+      <p class="note">Windows may say the publisher is unknown while the installer is unsigned. Choose <b>More info</b>, then <b>Run anyway</b>. <a href="https://github.com/Sinmi007/krustr-studio/releases">All releases</a></p>
     </div>
   </section>
 </main>
 
-<footer class="gutter">
+<footer>
   <div class="wrap">
     <div class="foot">
       <div class="about"><a class="brand" href="#top"><svg><use href="#mark"/></svg>krustr <span>studio</span></a><p>Church graphics for livestreams and projectors: scripture, songs, lower thirds and layouts, from one window.</p></div>

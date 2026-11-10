@@ -41,4 +41,4 @@ createServer(async (req, res) => {
   res.statusCode = file.endsWith('404.html') && pathname !== '/404' ? 404 : 200
   res.setHeader('Content-Type', types[extname(file)] ?? 'application/octet-stream')
   res.end(readFileSync(file))
-}).listen(port, '127.0.0.1', () => console.log(`Krustr site and relay on http://127.0.0.1:${port}`))
+}).listen(port, process.env.HOST ?? '127.0.0.1', () => console.log(`Krustr site and relay on http://${process.env.HOST ?? '127.0.0.1'}:${port}`))
