@@ -92,10 +92,11 @@
               <span class="chip ml">2 outputs connected</span>
             </div>
             <div class="app-cols">
-              <div class="rail">
-                <div><i></i>Schedule</div><div class="on" data-mode="bible"><i></i>Bible</div><div><i></i>Songs</div><div><i></i>Media</div><div><i></i>Layouts</div><div class="live-dot" data-mode="sermon"><i></i>Sermon</div>
+              <div class="rail" id="mockRail"><span class="rail-ind" id="railInd"></span>
+                <div class="on" data-mode="scenes"><i></i>Schedule</div><div data-mode="bible"><i></i>Bible</div><div data-mode="songs"><i></i>Songs</div><div data-mode="sources"><i></i>Media</div><div data-mode="layouts"><i></i>Layouts</div><div class="live-dot" data-mode="sermon"><i></i>Sermon</div>
               </div>
-              <div class="pane pane-scripture">
+              <div class="panes">
+<div class="pane" data-pane="bible">
                 <h4>Scripture</h4>
                 <div class="search"><span id="appSearch">jn 3:16</span><span class="caret"></span></div>
                 <div class="chap">John 3</div>
@@ -106,7 +107,7 @@
                   <p data-v="18"><b>18</b>He that believeth on him is not condemned: but he that believeth not is condemned already.</p>
                 </div>
               </div>
-              <div class="pane pane-sermon">
+<div class="pane" data-pane="sermon">
                 <h4>Sermon</h4>
                 <div class="sm-top"><span class="sm-stop"><i></i>Stop</span><span class="sm-state"><span><i></i>Listening · English (Nigeria)</span><small id="smClock">18:42</small></span></div>
                 <div class="sm-meter"><span id="smMeter"></span></div>
@@ -118,29 +119,81 @@
                   <p class="now" id="smNow"><span>turn with me to <mark>Romans chapter 3 verse 23</mark></span></p>
                 </div>
               </div>
+                <div class="pane" data-pane="songs">
+                  <h4>Songs</h4>
+                  <div class="search"><span>amazing</span><span class="caret"></span></div>
+                  <div class="plist">
+                    <p class="sel"><span>Amazing Grace</span><em>EN</em></p>
+                    <p><span>Holy, Holy, Holy</span><em>EN</em></p>
+                    <p><span>Ọlọ́run Olódùmarè</span><em>YO · EN</em></p>
+                  </div>
+                  <div class="sub-h">Amazing Grace · slides</div>
+                  <div class="slides" id="mSlides">
+                    <p class="sel"><b>1</b><span>Amazing grace! How sweet the sound<br>That saved a wretch like me!</span></p>
+                    <p><b>2</b><span>I once was lost, but now am found;<br>Was blind, but now I see.</span></p>
+                    <p><b>3</b><span>’Twas grace that taught my heart to fear,<br>And grace my fears relieved;</span></p>
+                  </div>
+                </div>
+                <div class="pane show" data-pane="scenes">
+                  <h4>Schedule <small>Sunday service</small></h4>
+                  <div class="sched" id="mSched">
+                    <p class="done"><b>1</b><span>Countdown to 10:00</span><em>Countdown</em></p>
+                    <p><b>2</b><span>Welcome</span><em>Title card</em></p>
+                    <p><b>3</b><span>Opening prayer</span><em>Speaker</em></p>
+                    <p><b>4</b><span>Praise and worship</span><em>Songs</em></p>
+                    <p><b>5</b><span>Scripture reading</span><em>John 3</em></p>
+                    <p><b>6</b><span>Sermon</span><em>Camera + verse</em></p>
+                    <p><b>7</b><span>Offering</span><em>Video</em></p>
+                  </div>
+                </div>
+                <div class="pane" data-pane="sources">
+                  <h4>Media</h4>
+                  <div class="sub-h">Inputs</div>
+                  <div class="srcs" id="mSrcs">
+                    <p data-s="pulpit" class="live"><i></i><span>Camera 1 · Pulpit</span><em>LIVE</em></p>
+                    <p data-s="choir"><i></i><span>Camera 2 · Choir</span><em></em></p>
+                    <p data-s="laptop"><i></i><span>Laptop · Slides</span><em></em></p>
+                    <p data-s="video"><i></i><span>Video · Offering loop</span><em></em></p>
+                  </div>
+                  <div class="sub-h">Graphics</div>
+                  <div class="srcs" id="mGfx">
+                    <p data-s="countdown"><i></i><span>Countdown</span><em></em></p>
+                    <p data-s="announce"><i></i><span>Announcement</span><em></em></p>
+                    <p data-s="giving"><i></i><span>Giving</span><em></em></p>
+                  </div>
+                </div>
+                <div class="pane" data-pane="layouts">
+                  <h4>Layouts</h4>
+                  <div class="lays" id="mLays">
+                    <div class="sel"><span class="th th-conf"><i></i><i></i><i></i></span><span>Conference<em>Camera + verse + event strip</em></span></div>
+                    <div><span class="th th-focus"><i></i><i></i></span><span>Speaker focus<em>Camera + name</em></span></div>
+                    <div><span class="th th-split"><i></i><i></i></span><span>Split screen<em>Two cameras</em></span></div>
+                  </div>
+                </div>
+              </div>
               <div class="stagecol">
                 <div class="monrow">
-                  <div class="mon"><div class="mon-l pv"><i></i>Preview</div><div class="screen pv"><div class="cam"></div><div class="lt" id="pvLt"><b>JOHN 3:16 · KJV</b><span>For God so loved the world, that he gave his only begotten Son…</span></div></div></div>
+                  <div class="mon"><div class="mon-l pv"><i></i>Preview</div><div class="screen pv" id="pvScreen" data-cam="pulpit"><div class="cam"></div><div class="ov lt on" data-kind="lt" id="pvLt"><b>JOHN 3:16 · KJV</b><span>For God so loved the world, that he gave his only begotten Son…</span></div><div class="ov fs" data-kind="fs"></div><div class="ov title" data-kind="title"></div><div class="ov compm" data-kind="comp"></div></div></div>
                   <div class="tcol"><div class="tbtn" id="appTake"><svg><use href="#arrow"/></svg>Transition</div><div class="tbtn cut">Cut</div></div>
-                  <div class="mon"><div class="mon-l pg"><i></i>Program</div><div class="screen pg"><div class="cam"></div><div class="lt" id="pgLt"><b>JOHN 3:15 · KJV</b><span>That whosoever believeth in him should not perish…</span></div></div></div>
+                  <div class="mon"><div class="mon-l pg"><i></i>Program</div><div class="screen pg" id="pgScreen" data-cam="pulpit"><div class="cam"></div><div class="ov lt on" data-kind="lt" id="pgLt"><b>JOHN 3:15 · KJV</b><span>That whosoever believeth in him should not perish…</span></div><div class="ov fs" data-kind="fs"></div><div class="ov title" data-kind="title"></div><div class="ov compm" data-kind="comp"></div></div></div>
                 </div>
                 <div class="layers-row">
-                  <div class="pvstrip"><b>LT</b><span id="pvName">John 3:16 · KJV</span></div>
+                  <div class="pvstrip"><b id="pvTag">LT</b><span id="pvName">John 3:16 · KJV</span></div>
                   <div></div>
-                  <div class="lstrip"><div class="on"><b>LT</b><span id="pgName">John 3:15</span></div><div><b>FS</b>Off</div><div class="on"><b>IN</b><span>Camera 1</span></div></div>
+                  <div class="lstrip"><div class="on" id="lyLt"><b>LT</b><span id="pgName">John 3:15</span></div><div id="lyFs"><b>FS</b><span id="pgFs">Off</span></div><div class="on"><b>IN</b><span id="pgCam">Camera 1</span></div></div>
                 </div>
                 <div class="app-note">
                   <div>On air for<strong id="appAir">00:42:10</strong></div>
                   <div>Verses shown today<strong id="appCount">23</strong></div>
-                  <div>Next in schedule<strong>Offering</strong></div>
+                  <div>Next in schedule<strong id="appNext">Offering</strong></div>
                 </div>
-                <div class="ctrl"><span>◂ Scripture reading ▸</span><span>Lower third</span><span>Full screen</span><span>Clear all</span><span class="r">Projector</span></div>
+                <div class="ctrl"><span id="ctrlScene">◂ Welcome ▸</span><span>Lower third</span><span>Full screen</span><span>Clear all</span><span class="r">Projector</span></div>
               </div>
-              <div class="insp">
+              <div class="insp" id="mInsp">
                 <div class="seg"><span class="on">Properties</span><span>Animation</span><span>Branding</span></div>
                 <div class="field"><label>Style</label><div>Classic</div></div>
                 <div class="field"><label>Version</label><div>King James Version</div></div>
-                <div class="field"><label>Reference</label><div id="appRef">John 3:16</div></div>
+                <div class="field"><label>Reference</label><div>John 3:16</div></div>
                 <div class="field"><label>Entrance</label><div>Slide from left</div></div>
               </div>
             </div>

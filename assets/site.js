@@ -257,92 +257,223 @@ void main(){
   }
   requestAnimationFrame(frame)
 
-  /* ---- the app in the hero runs a service: verse after verse, taken live ---- */
-  const verses = [...document.querySelectorAll('#appVerses p')]
+  /* ---- the app in the hero runs a service: a tour of every mode, one scene after another ---- */
+  // Lyrics: "Amazing Grace", John Newton (1779), public domain. Verses: King James Version, public domain.
+  // The preacher's lines and everything else are our own wording.
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms))
+  const appEl = $('#app'), rail = $('#mockRail'), railInd = $('#railInd'), take = $('#appTake')
+  const pvScreen = $('#pvScreen'), pgScreen = $('#pgScreen')
+  const pvTag = $('#pvTag'), pvName = $('#pvName'), pgName = $('#pgName'), pgFs = $('#pgFs'), pgCam = $('#pgCam'), lyLt = $('#lyLt'), lyFs = $('#lyFs')
+  const count = $('#appCount'), air = $('#appAir'), clock = $('#appClock'), ctrlScene = $('#ctrlScene'), appNext = $('#appNext')
   const fLt = $('.card-lt'), fLtRef = $('#fLtRef'), fLtText = $('#fLtText')
-  const pvName = $('#pvName'), pgName = $('#pgName'), count = $('#appCount'), air = $('#appAir')
-  const pvLt = $('#pvLt'), pgLt = $('#pgLt'), take = $('#appTake'), ref = $('#appRef'), search = $('#appSearch'), clock = $('#appClock')
-  const ltFor = (p) => `<b>JOHN 3:${p.dataset.v} · KJV</b><span>${p.textContent.replace(/^\d+/, '').trim().split(' ').slice(0, 10).join(' ')}…</span>`
-  let vi = 1
-  const swap = (el, html) => { el.classList.add('swap'); setTimeout(() => { el.innerHTML = html; el.classList.remove('swap') }, 280) }
-  const tick = () => {
-    take.classList.add('press')
-    setTimeout(() => {
-      take.classList.remove('press')
-      swap(pgLt, pvLt.innerHTML)
-      pgName.textContent = ref.textContent
-      fLt.classList.add('swap')
-      setTimeout(() => {
-        const v = verses[vi]
-        fLtRef.textContent = `JOHN 3:${v.dataset.v} · KJV`
-        fLtText.textContent = v.textContent.replace(/^\d+/, '').trim().split(' ').slice(0, 13).join(' ') + '…'
-        fLt.classList.remove('swap')
-      }, 380)
-      count.textContent = String(Number(count.textContent) + 1)
-    }, 160)
-    setTimeout(() => {
-      verses[vi].classList.remove('sel')
-      vi = vi + 1 < verses.length ? vi + 1 : 0
-      const v = verses[vi]
-      v.classList.add('sel')
-      swap(pvLt, ltFor(v))
-      ref.textContent = `John 3:${v.dataset.v}`
-      pvName.textContent = `John 3:${v.dataset.v} · KJV`
-      search.textContent = `jn 3:${v.dataset.v}`
-    }, 1400)
-  }
-  let inSermon = false
-  if (!reduce) setInterval(() => { if (!inSermon) tick() }, 3600)
-
-  /* ---- the app switches to Sermon now and then: it hears the preacher, a verse card pops in, the verse goes to Preview ---- */
-  const appEl = $('#app'), railBible = $('.rail [data-mode=bible]'), railSermon = $('.rail [data-mode=sermon]')
-  const smNow = $('#smNow'), smCard = $('#smCard'), smRef = $('#smRef'), smText = $('#smText'), smAt = $('#smAt'), smMeter = $('#smMeter'), smClock = $('#smClock')
   const heardRef = $('#heardRef'), heardCard = $('#heardCard')
-  // The preacher's lines are our own wording; the verses are the King James Version (public domain).
+  const inspVals = [...document.querySelectorAll('#mInsp .field div')], inspLabels = [...document.querySelectorAll('#mInsp .field label')]
+  const pop = (el) => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop') }
+  const CAMS = { pulpit: 'Camera 1', choir: 'Camera 2' }
+
+  // The rail's highlight glides to the mode; its pane crossfades in.
+  const moveInd = () => {
+    const on = rail.querySelector('[data-mode].on')
+    if (on) { railInd.style.height = `${on.offsetHeight}px`; railInd.style.transform = `translateY(${on.offsetTop}px)` }
+  }
+  addEventListener('resize', moveInd)
+  requestAnimationFrame(moveInd)
+  const enter = async (mode, scene, insp) => {
+    rail.querySelectorAll('[data-mode]').forEach((d) => d.classList.toggle('on', d.dataset.mode === mode))
+    moveInd()
+    appEl.querySelectorAll('.panes > .pane').forEach((p) => p.classList.toggle('show', p.dataset.pane === mode))
+    ctrlScene.textContent = `◂ ${scene} ▸`
+    inspVals.forEach((v) => v.classList.add('fade'))
+    await wait(300)
+    insp.forEach(([label, value], i) => { inspLabels[i].textContent = label; inspVals[i].textContent = value })
+    inspVals.forEach((v) => v.classList.remove('fade'))
+    await wait(650)
+  }
+
+  // Each screen changes one thing at a time: what's leaving goes, then what's coming arrives.
+  const queues = new Map()
+  const show = (screen, kind, html, cam) => {
+    const run = async () => {
+      if (cam && screen.dataset.cam !== cam) screen.dataset.cam = cam
+      const target = kind ? screen.querySelector(`.ov[data-kind="${kind}"]`) : null
+      const leaving = [...screen.querySelectorAll('.ov.on')].filter((o) => o !== target)
+      leaving.forEach((o) => o.classList.remove('on'))
+      if (target) {
+        if (target.classList.contains('on')) { target.classList.remove('on'); await wait(340) }
+        else if (leaving.length) await wait(300)
+        if (html != null) target.innerHTML = html
+        void target.offsetWidth
+        target.classList.add('on')
+      }
+      await wait(120)
+    }
+    const next = (queues.get(screen) ?? Promise.resolve()).then(run)
+    queues.set(screen, next)
+    return next
+  }
+  let pv = { kind: 'lt', html: $('#pvLt').innerHTML, cam: 'pulpit', name: 'John 3:16 · KJV', tag: 'LT' }
+  const preview = (kind, html, cam, name, tag) => {
+    pv = { kind, html, cam: cam ?? pv.cam, name, tag }
+    pvTag.textContent = tag
+    pvName.textContent = name
+    return show(pvScreen, kind, html, pv.cam)
+  }
+  const floatLt = (ref, text) => {
+    fLt.classList.add('swap')
+    setTimeout(() => { fLtRef.textContent = ref; fLtText.textContent = text; fLt.classList.remove('swap') }, 380)
+  }
+  const goLive = async () => {
+    take.classList.add('press')
+    await wait(170)
+    take.classList.remove('press')
+    const { kind, html, cam, name } = pv
+    await show(pgScreen, kind, html, cam)
+    lyLt.classList.toggle('on', kind === 'lt')
+    lyFs.classList.toggle('on', kind === 'fs' || kind === 'title' || kind === 'comp')
+    pgName.textContent = kind === 'lt' ? name.replace(/ · KJV$/, '') : 'Off'
+    pgFs.textContent = kind === 'lt' || !kind ? 'Off' : name
+    pgCam.textContent = CAMS[cam] ?? 'Camera 1'
+    if (kind === 'lt') {
+      const tmp = document.createElement('div'); tmp.innerHTML = html
+      floatLt(tmp.querySelector('b')?.textContent ?? '', tmp.querySelector('span')?.textContent ?? '')
+    }
+  }
+  const lt = (cap, text) => `<b>${cap}</b><span>${text}</span>`
+  const select = (list, i) => [...list.children].forEach((c, k) => c.classList.toggle('sel', k === i))
+
+  /* Bible: look up the next verse, put it in Preview, take it live */
+  const verses = [...document.querySelectorAll('#appVerses p')], appSearch = $('#appSearch')
+  let vi = 1
+  const bibleScene = async () => {
+    await enter('bible', 'Scripture reading', [['Style', 'Classic'], ['Version', 'King James Version'], ['Reference', `John 3:${verses[vi].dataset.v}`], ['Entrance', 'Slide from left']])
+    for (let n = 0; n < 2; n++) {
+      vi = (vi + 1) % verses.length
+      const v = verses[vi]
+      verses.forEach((x) => x.classList.toggle('sel', x === v))
+      appSearch.textContent = `jn 3:${v.dataset.v}`
+      inspVals[2].textContent = `John 3:${v.dataset.v}`
+      const text = v.textContent.replace(/^\d+/, '').trim().split(' ').slice(0, 10).join(' ') + '…'
+      await preview('lt', lt(`JOHN 3:${v.dataset.v} · KJV`, text), 'pulpit', `John 3:${v.dataset.v} · KJV`, 'LT')
+      await wait(1500)
+      await goLive()
+      count.textContent = String(Number(count.textContent) + 1)
+      await wait(1300)
+    }
+  }
+
+  /* Sermon: the preacher names a verse, a card pops in, it goes to Preview and live */
+  const smNow = $('#smNow'), smCard = $('#smCard'), smRef = $('#smRef'), smText = $('#smText'), smAt = $('#smAt'), smMeter = $('#smMeter'), smClock = $('#smClock')
   const HEARD = [
     ['turn with me to', 'Romans chapter 3 verse 23', 'Romans 3:23', 'ROMANS 3:23', 'For all have sinned, and come short of the glory of God;'],
     ['David writes in', 'Psalm 23 verse 1', 'Psalm 23:1', 'PSALM 23:1', 'The LORD is my shepherd; I shall not want.'],
     ['Paul says in', 'Philippians 4 verse 13', 'Philippians 4:13', 'PHILIPPIANS 4:13', 'I can do all things through Christ which strengtheneth me.']
   ]
-  const pop = (el) => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop') }
   let heard = 0, smSecs = 18 * 60 + 42
   const stamp = () => `${String(Math.floor(smSecs / 60)).padStart(2, '0')}:${String(smSecs % 60).padStart(2, '0')}`
   setInterval(() => { smSecs++; smClock.textContent = stamp() }, 1000)
-  const sermonScene = () => {
+  const sermonScene = async () => {
     const [lead, said, label, cap, text] = HEARD[heard++ % HEARD.length]
-    inSermon = true
-    appEl.classList.add('sermon')
-    railBible.classList.remove('on'); railSermon.classList.add('on')
+    await enter('sermon', 'Sermon', [['Style', 'Classic'], ['Version', 'King James Version'], ['Reference', label], ['Entrance', 'Slide from left']])
     const meter = setInterval(() => { smMeter.style.transform = `scaleX(${(0.25 + Math.random() * 0.65).toFixed(2)})` }, 140)
     const words = `${lead} ${said}`.split(' ')
-    smNow.innerHTML = '<span></span>'
-    words.forEach((_, i) => setTimeout(() => {
-      const done = i + 1 === words.length
-      smNow.innerHTML = `<span>${done ? `${lead} <mark>${said}</mark>` : words.slice(0, i + 1).join(' ')}</span>`
-      if (!done) return
-      // spotted: a card in Sermon, the same in "Heard in the sermon", then into Preview
-      smRef.textContent = label; smText.textContent = text; smAt.textContent = stamp(); pop(smCard)
-      heardRef.textContent = label; pop(heardCard)
-      setTimeout(() => swap(pvLt, `<b>${cap} · KJV</b><span>${text}</span>`), 900)
-      setTimeout(() => {
-        take.classList.add('press')
-        setTimeout(() => {
-          take.classList.remove('press')
-          swap(pgLt, `<b>${cap} · KJV</b><span>${text}</span>`)
-          // the big lower third follows what just went live
-          fLt.classList.add('swap')
-          setTimeout(() => { fLtRef.textContent = `${cap} · KJV`; fLtText.textContent = text; fLt.classList.remove('swap') }, 380)
-        }, 160)
-      }, 2600)
-    }, 500 + i * 240))
-    setTimeout(() => {
-      clearInterval(meter)
-      appEl.classList.remove('sermon')
-      railSermon.classList.remove('on'); railBible.classList.add('on')
-      inSermon = false
-    }, 500 + words.length * 240 + 5200)
+    for (let i = 0; i < words.length; i++) {
+      smNow.innerHTML = `<span>${words.slice(0, i + 1).join(' ')}</span>`
+      await wait(230)
+    }
+    smNow.innerHTML = `<span>${lead} <mark>${said}</mark></span>`
+    smRef.textContent = label; smText.textContent = text; smAt.textContent = stamp(); pop(smCard)
+    heardRef.textContent = label; pop(heardCard)
+    await wait(900)
+    await preview('lt', lt(`${cap} · KJV`, text), 'pulpit', `${label} · KJV`, 'LT')
+    await wait(1500)
+    await goLive()
+    await wait(1600)
+    clearInterval(meter)
   }
-  if (!reduce) setTimeout(function cycle() { sermonScene(); setTimeout(cycle, 22000) }, 9000)
+
+  /* Songs: the next slide, full screen, taken live */
+  const slides = $('#mSlides')
+  let si = 0
+  const songScene = async () => {
+    await enter('songs', 'Praise and worship', [['Style', 'Full screen'], ['Song', 'Amazing Grace'], ['Slide', `${si + 1} of 3`], ['Entrance', 'Fade']])
+    for (let n = 0; n < 2; n++) {
+      select(slides, si)
+      inspVals[2].textContent = `${si + 1} of 3`
+      const words = slides.children[si].querySelector('span').innerHTML
+      await preview('fs', words, 'pulpit', `Amazing Grace · slide ${si + 1}`, 'FS')
+      await wait(1400)
+      await goLive()
+      await wait(1300)
+      si = (si + 1) % slides.children.length
+    }
+  }
+
+  /* Schedule: cue the next item, it lands in Preview, take it */
+  const sched = $('#mSched')
+  const scheduleScene = async () => {
+    await enter('scenes', 'Welcome', [['Style', 'Title card'], ['Title', 'Welcome home'], ['Subtitle', 'Sunday service'], ['Entrance', 'Fade']])
+    const rows = [...sched.children]
+    rows.forEach((r, k) => { r.classList.toggle('done', k === 0); r.classList.remove('live') })
+    select(sched, 1)
+    await preview('title', '<b>Welcome home</b><span>Sunday service · 10:00</span>', 'pulpit', 'Welcome', 'FS')
+    await wait(1300)
+    await goLive()
+    rows[1].classList.add('live')
+    appNext.textContent = 'Opening prayer'
+    await wait(1300)
+    rows[1].classList.remove('live'); rows[1].classList.add('done')
+    select(sched, 2)
+    ctrlScene.textContent = '◂ Opening prayer ▸'
+    await preview('lt', lt('PASTOR ADE OKAFOR', 'Opening prayer'), 'pulpit', 'Opening prayer', 'LT')
+    await wait(1300)
+    await goLive()
+    rows[2].classList.add('live')
+    appNext.textContent = 'Praise and worship'
+    await wait(1300)
+  }
+
+  /* Media: switch cameras, then an announcement over the new shot */
+  const srcs = $('#mSrcs'), gfx = $('#mGfx')
+  const mark = (list, s, cls) => list.querySelectorAll('p').forEach((p) => p.classList.toggle(cls, p.dataset.s === s))
+  const mediaScene = async () => {
+    await enter('sources', 'Offering', [['Input', 'Camera 2 · Choir'], ['Fit', 'Fill the screen'], ['Audio', 'Off'], ['Entrance', 'Crossfade']])
+    mark(srcs, 'choir', 'sel'); mark(srcs, 'choir', 'pv')
+    await preview(null, null, 'choir', 'Camera 2 · Choir', 'IN')
+    await wait(1300)
+    await goLive()
+    mark(srcs, 'choir', 'live')
+    srcs.querySelectorAll('p').forEach((p) => { p.querySelector('em').textContent = p.dataset.s === 'choir' ? 'LIVE' : '' })
+    await wait(1100)
+    mark(srcs, '', 'sel'); mark(srcs, '', 'pv'); mark(gfx, 'announce', 'sel')
+    await preview('title', '<b>Youth Conference</b><span>Saturday · 4 PM · Main hall</span>', 'choir', 'Announcement', 'FS')
+    await wait(1300)
+    await goLive()
+    await wait(1300)
+    mark(gfx, '', 'sel')
+    // back to the pulpit camera for the next round
+    mark(srcs, 'pulpit', 'live')
+    srcs.querySelectorAll('p').forEach((p) => { p.querySelector('em').textContent = p.dataset.s === 'pulpit' ? 'LIVE' : '' })
+  }
+
+  /* Layouts: the camera beside the verse, with the event strip */
+  const lays = $('#mLays')
+  const layoutScene = async () => {
+    await enter('layouts', 'Sermon', [['Layout', 'Conference'], ['Camera box', 'Camera 1'], ['Content', 'Romans 8:28'], ['Strip', 'Youth Conference']])
+    select(lays, 0)
+    await preview('comp', '<div class="cb"><div class="cam"></div></div><div class="vb"><small>ROMANS 8:28 · KJV</small>And we know that all things work together for good to them that love God…</div><div class="sb">YOUTH CONFERENCE · DAY 2</div>', 'pulpit', 'Conference layout', 'FS')
+    await wait(1500)
+    await goLive()
+    await wait(1800)
+  }
+
+  // A service's order: the schedule first, the sermon last.
+  const SCENES = [scheduleScene, bibleScene, songScene, mediaScene, layoutScene, sermonScene]
+  if (!reduce) {
+    ;(async () => {
+      await wait(2600)
+      for (let k = 0; ; k++) await SCENES[k % SCENES.length]()
+    })()
+  }
 
   const pad = (n) => String(n).padStart(2, '0')
   let onAir = 42 * 60 + 10
