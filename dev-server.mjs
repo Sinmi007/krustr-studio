@@ -18,7 +18,8 @@ for (const file of ['.env', process.env.KEYS_FILE].filter(Boolean)) {
 
 const routes = {
   '/api/translate': (await import('./api/translate.js')).default,
-  '/api/bible': (await import('./api/bible.js')).default
+  '/api/bible': (await import('./api/bible.js')).default,
+  '/api/speech-token': (await import('./api/speech-token.js')).default
 }
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.json': 'application/json' }
 
